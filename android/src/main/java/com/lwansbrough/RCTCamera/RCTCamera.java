@@ -321,27 +321,51 @@ public class RCTCamera {
         switch (captureQuality) {
             case RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_LOW:
                 videoSize = getSmallestSize(supportedSizes);
-                cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_480P);
+                if (CamcorderProfile.hasProfile(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_480P)) {
+                    cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_480P);
+                } else {
+                    return null;
+                }
                 break;
             case RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_MEDIUM:
                 videoSize = supportedSizes.get(supportedSizes.size() / 2);
-                cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_720P);
+                if (CamcorderProfile.hasProfile(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_720P)) {
+                    cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_720P);
+                } else {
+                    return setCaptureVideoQuality(cameraType, RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_LOW);
+                }
                 break;
             case RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_HIGH:
                 videoSize = getBestSize(supportedSizes, Integer.MAX_VALUE, Integer.MAX_VALUE);
-                cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_HIGH);
+                if (CamcorderProfile.hasProfile(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_HIGH)) {
+                    cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_HIGH);
+                } else {
+                    return setCaptureVideoQuality(cameraType, RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_MEDIUM);
+                }
                 break;
             case RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_480P:
                 videoSize = getBestSize(supportedSizes, RESOLUTION_480P.width, RESOLUTION_480P.height);
-                cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_480P);
+                if (CamcorderProfile.hasProfile(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_480P)) {
+                    cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_480P);
+                } else {
+                    return setCaptureVideoQuality(cameraType, RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_HIGH);
+                }
                 break;
             case RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_720P:
                 videoSize = getBestSize(supportedSizes, RESOLUTION_720P.width, RESOLUTION_720P.height);
-                cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_720P);
+                if (CamcorderProfile.hasProfile(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_720P)) {
+                    cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_720P);
+                } else {
+                    return setCaptureVideoQuality(cameraType, RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_480P);
+                }
                 break;
             case RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_1080P:
                 videoSize = getBestSize(supportedSizes, RESOLUTION_1080P.width, RESOLUTION_1080P.height);
-                cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_1080P);
+                if (CamcorderProfile.hasProfile(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_1080P)) {
+                    cm = CamcorderProfile.get(_cameraTypeToIndex.get(cameraType), CamcorderProfile.QUALITY_1080P);
+                } else {
+                    return setCaptureVideoQuality(cameraType, RCTCameraModule.RCT_CAMERA_CAPTURE_QUALITY_720P);
+                }
                 break;
         }
 
