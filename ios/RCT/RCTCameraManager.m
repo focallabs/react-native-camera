@@ -47,6 +47,16 @@ RCT_EXPORT_MODULE();
     return NO;
 }
 
++ (NSDictionary *)validVideoStabilizationModes
+{
+    return @{
+             @"off": @(AVCaptureVideoStabilizationModeOff),
+             @"standard": @(AVCaptureVideoStabilizationModeStandard),
+             @"cinematic": @(AVCaptureVideoStabilizationModeCinematic),
+             @"auto": @(AVCaptureVideoStabilizationModeAuto)
+             };
+}
+
 - (NSDictionary *)constantsToExport
 {
     
@@ -132,7 +142,8 @@ RCT_EXPORT_MODULE();
                      @"off": @(RCTCameraTorchModeOff),
                      @"on": @(RCTCameraTorchModeOn),
                      @"auto": @(RCTCameraTorchModeAuto)
-                     }
+                     },
+             @"VideoStabilization": [[self class] validVideoStabilizationModes],
              };
 }
 
@@ -140,6 +151,7 @@ RCT_EXPORT_VIEW_PROPERTY(orientation, NSInteger);
 RCT_EXPORT_VIEW_PROPERTY(defaultOnFocusComponent, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(onFocusChanged, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(onZoomChanged, BOOL);
+RCT_EXPORT_VIEW_PROPERTY(videoStabilizationMode, NSInteger);
 
 RCT_CUSTOM_VIEW_PROPERTY(captureQuality, NSInteger, RCTCamera) {
     NSInteger quality = [RCTConvert NSInteger:json];
@@ -874,7 +886,17 @@ RCT_EXPORT_METHOD(setZoom:(CGFloat)zoomFactor) {
         CMTime maxDuration = CMTimeMakeWithSeconds(totalSeconds, preferredTimeScale);
         self.movieFileOutput.maxRecordedDuration = maxDuration;
     }
+
+    AVCaptureConnection *connection = [self.movieFileOutput connectionWithMediaType:AVMediaTypeVideo];
     
+    if (self.videoStabilizationMode != 0) {
+        if (connection.isVideoStabilizationSupported == NO) {
+            RCTLogWarn(@"%s: Video Stabilization is not supported on this device.", __func__);
+        } else {
+            [connection setPreferredVideoStabilizationMode:self.videoStabilizationMode];
+        }
+    }
+
     dispatch_async(self.sessionQueue, ^{
         [[self.movieFileOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:orientation];
         
