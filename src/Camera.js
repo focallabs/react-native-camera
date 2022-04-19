@@ -130,7 +130,6 @@ export default class Camera extends Component {
     permissionDialogMessage: PropTypes.string,
     notAuthorizedView: PropTypes.element,
     pendingAuthorizationView: PropTypes.element,
-    videoStabilizationMode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
   static defaultProps = {
@@ -163,7 +162,6 @@ export default class Camera extends Component {
         <ActivityIndicator size="small" />
       </View>
     ),
-    videoStabilizationMode: 0,
   };
 
   static checkDeviceAuthorizationStatus = CameraManager.checkDeviceAuthorizationStatus;
@@ -316,6 +314,7 @@ export default class Camera extends Component {
       fixOrientation: props.fixOrientation,
       cropToPreview: props.cropToPreview,
       ...options,
+      videoStabilizationMode: options.videoStabilizationMode || 0,
     };
 
     if (options.mode === Camera.constants.CaptureMode.video) {
