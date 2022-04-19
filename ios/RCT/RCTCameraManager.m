@@ -888,12 +888,14 @@ RCT_EXPORT_METHOD(setZoom:(CGFloat)zoomFactor) {
     }
 
     AVCaptureConnection *connection = [self.movieFileOutput connectionWithMediaType:AVMediaTypeVideo];
+
+    int32_t videoStabilizationMode = [[options valueForKey:@"videoStabilizationMode"] intValue];
     
-    if (self.videoStabilizationMode != 0) {
+    if (videoStabilizationMode != 0) {
         if (connection.isVideoStabilizationSupported == NO) {
             RCTLogWarn(@"%s: Video Stabilization is not supported on this device.", __func__);
         } else {
-            [connection setPreferredVideoStabilizationMode:self.videoStabilizationMode];
+            [connection setPreferredVideoStabilizationMode:videoStabilizationMode];
         }
     }
 
