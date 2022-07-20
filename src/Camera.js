@@ -313,8 +313,8 @@ export default class Camera extends Component {
       mirrorImage: props.mirrorImage,
       fixOrientation: props.fixOrientation,
       cropToPreview: props.cropToPreview,
-      ...options,
-      videoStabilizationMode: options.videoStabilizationMode || 0,
+      videoStabilizationMode: props.videoStabilizationMode || 0,
+      ...options
     };
 
     if (options.mode === Camera.constants.CaptureMode.video) {
