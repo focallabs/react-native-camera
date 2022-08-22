@@ -50,10 +50,10 @@ RCT_EXPORT_MODULE();
 + (NSDictionary *)validVideoStabilizationModes
 {
     return @{
-             @"off": @(AVCaptureVideoStabilizationModeOff),
-             @"standard": @(AVCaptureVideoStabilizationModeStandard),
-             @"cinematic": @(AVCaptureVideoStabilizationModeCinematic),
-             @"auto": @(AVCaptureVideoStabilizationModeAuto)
+             @"off": [NSNumber numberWithInt: AVCaptureVideoStabilizationModeOff],
+             @"standard": [NSNumber numberWithInt: AVCaptureVideoStabilizationModeStandard],
+             @"cinematic": [NSNumber numberWithInt: AVCaptureVideoStabilizationModeCinematic],
+             @"auto": [NSNumber numberWithInt: AVCaptureVideoStabilizationModeAuto]
              };
 }
 
@@ -143,7 +143,7 @@ RCT_EXPORT_MODULE();
                      @"on": @(RCTCameraTorchModeOn),
                      @"auto": @(RCTCameraTorchModeAuto)
                      },
-             @"VideoStabilization": [[self class] validVideoStabilizationModes],
+             @"VideoStabilizationMode": [[self class] validVideoStabilizationModes],
              };
 }
 
